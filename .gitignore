@@ -1,0 +1,43 @@
+# Secrets
+.env
+.env.local
+
+# Database
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Generated artifacts (kept out of git, regenerated locally)
+report.html
+results.csv
+results.json
+rank-tracker.log
+
+# Original brief PDF — internal asset, not part of public source
+seo competitor rank tracker _ new blog post.pdf
+
+# Blog content and editorial assets — published separately on decodo.com,
+# not part of the public project source.
+BLOG_POST.md
+BLOG_POST_REVIEW_CHECKLIST.md
+images/
