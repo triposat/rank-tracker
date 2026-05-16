@@ -2,6 +2,10 @@
 .env
 .env.local
 
+# Local user configuration
+keywords.csv
+keywords.csv.local
+
 # Database
 *.db
 *.db-journal
@@ -27,17 +31,8 @@ dist/
 *.swo
 .DS_Store
 
-# Generated artifacts (kept out of git, regenerated locally)
+# Generated artifacts
 report.html
 results.csv
 results.json
 rank-tracker.log
-
-# Original brief PDF — internal asset, not part of public source
-seo competitor rank tracker _ new blog post.pdf
-
-# Blog content and editorial assets — published separately on decodo.com,
-# not part of the public project source.
-BLOG_POST.md
-BLOG_POST_REVIEW_CHECKLIST.md
-images/
