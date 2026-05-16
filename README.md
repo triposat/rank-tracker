@@ -144,11 +144,11 @@ Position 1 sets the baseline at 100, and an AI citation at rank 1 adds 25, so a 
 
 | File | Role |
 |---|---|
-| *models.py* | *Pydantic* `RankCheckConfig`, `RankResult`, `AIOverviewCitation`, `CompetitorEntry`. |
-| *fetcher.py* | Decodo client with retries, distinct `DecodoCredentialError` / `DecodoAPIError`, and the response parser. |
+| *models.py* | *Pydantic* *RankCheckConfig*, *RankResult*, *AIOverviewCitation*, *CompetitorEntry*. |
+| *fetcher.py* | Decodo client with retries, distinct *DecodoCredentialError* / *DecodoAPIError*, and the response parser. |
 | *canary.py* | Schema-drift validator. Asserts structural shape (path, types, key presence) without raising a false alarm when content is legitimately absent (e.g. a query that has no PAA block). |
 | *storage.py* | SQLite layer with WAL mode + migrations. `runs` + `rank_results` tables. UTC timestamps. Per-call connections, thread-safe. |
-| *scheduler.py* | `BatchRunner` (sequential or `ThreadPoolExecutor`), keyword loader, frequency-tier filter, `Alerter` (Slack/Discord/SMTP), heartbeat. |
+| *scheduler.py* | *BatchRunner* (sequential or *ThreadPoolExecutor*), keyword loader, frequency-tier filter, *Alerter* (Slack/Discord/SMTP), heartbeat. |
 | *scoring.py* | Composite visibility score. |
 | *report.py* | Terminal summary + trend + competitor diff + self-contained HTML report. |
 | *main.py* | CLI: `doctor`, `check`, `schedule`, `report`, `competitors`, `export`, `history`, `prune`, `test-alert`. |
@@ -255,7 +255,7 @@ After installing, `python main.py doctor` will warn if no scheduled run has comp
 
 ## Cost visibility
 
-Each call to Decodo counts, so `BatchRunner` records `api_calls` per run (including retries) and `doctor` prints the lifetime total. After a run you'll see:
+Each call to Decodo counts, so *BatchRunner* records `api_calls` per run (including retries) and `doctor` prints the lifetime total. After a run you'll see:
 
 ```
 Run 1 complete – 7 API call(s) this run, 7 lifetime (1 skipped by frequency rules)
@@ -305,7 +305,7 @@ If you redirect `python main.py check` output to a log file in cron (`>> rank-tr
 
 ## Scaling beyond SQLite
 
-Migrate to Postgres when you hit any of these conditions: concurrent writes from multiple processes, multiple operators editing keywords at once, or tens of thousands of results per day. Swap `Storage` for a Postgres-backed implementation with the same method surface, since every other module accesses `Storage` only through that interface.
+Migrate to Postgres when you hit any of these conditions: concurrent writes from multiple processes, multiple operators editing keywords at once, or tens of thousands of results per day. Swap *Storage* for a Postgres-backed implementation with the same method surface, since every other module accesses *Storage* only through that interface.
 
 ## License
 
