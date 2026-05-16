@@ -51,7 +51,7 @@ All four samples below are captured from one continuous run against `keywords.cs
 All checks passed. You're ready to run `python main.py check`.
 ```
 
-If `doctor` reports `[FAIL]   Credentials rejected`, the token paste is the most common cause: check for trailing whitespace, and confirm you copied the pre-encoded `Basic authentication token` field, not the raw username/password (the dashboard exposes both).
+If `doctor` reports `[FAIL]   Credentials rejected`, the token paste is the most common culprit, so check it for trailing whitespace and confirm you copied the pre-encoded `Basic authentication token` field rather than the raw username/password (the dashboard exposes both).
 
 `python main.py check` (Run 1, fresh DB) prints:
 
@@ -121,11 +121,11 @@ old-campaign-keyword,decodo.com,United States,en-us,desktop,en,1,no,daily
 - **`active=no`** keeps the historical data but stops new checks, so you can pause a keyword without forgetting it.
 - **`frequency`** is one of `daily` (~22h window), `weekly` (~6.5d), `monthly` (~28d), or `paused`. Each row is skipped if the same (keyword × geo × device × locale) was checked within the window, so you can run the script as often as your cron fires without double-billing.
 
-Each row is one check. To track a keyword across 3 locations, write 3 rows. **Exact duplicates are auto-collapsed at load time** with a warning.
+Each row is one check, so to track a keyword across 3 locations you write 3 rows. **Exact duplicates are auto-collapsed at load time** with a warning.
 
 ### Cost control
 
-The combination of `active` + `frequency` is your cost lever. On a 50-keyword list with a mix of daily/weekly/monthly tiers, expect 30–60% fewer Decodo calls than tracking every keyword daily.
+The combination of `active` + `frequency` is your cost lever. On a 50-keyword list with a mix of daily/weekly/monthly tiers, you can expect 30–60% fewer Decodo calls than tracking every keyword daily.
 
 ## Visibility score
 
@@ -138,7 +138,7 @@ score = 100 / √position
       + 3 if paa_present
 ```
 
-Position 1 baseline = 100. AI citation at rank 1 = +25. So `pos 2 + AI-cited #1 + PAA` ≈ 98.7.
+Position 1 sets the baseline at 100, and an AI citation at rank 1 adds 25, so a score of `pos 2 + AI-cited #1 + PAA` works out to roughly 98.7.
 
 ## Architecture
 
@@ -207,7 +207,7 @@ Exit codes: 0 = all channels delivered, 1 = one or more failed, 2 = nothing conf
 Alert events:
 - `NEW` – keyword entered the SERP for the first time at this (location, device).
 - `IMPROVED` / `DROPPED` – position moved by ≥ `--threshold` slots.
-- `DROPPED OUT` – keyword was ranked, now isn't.
+- `DROPPED OUT` – a keyword was previously ranked but isn't anymore.
 
 ## Running tests
 
@@ -255,19 +255,19 @@ After installing, `python main.py doctor` will warn if no scheduled run has comp
 
 ## Cost visibility
 
-Each call to Decodo counts. `BatchRunner` records `api_calls` per run (including retries), and `doctor` prints the lifetime total. After a run you'll see:
+Each call to Decodo counts, so `BatchRunner` records `api_calls` per run (including retries) and `doctor` prints the lifetime total. After a run you'll see:
 
 ```
 Run 1 complete – 7 API call(s) this run, 7 lifetime (1 skipped by frequency rules)
 ```
 
-For 50 keywords × 3 locations × daily, expect ~4,500 calls/month.
+For 50 keywords across 3 locations on a daily cadence, you can expect roughly 4,500 calls per month.
 
 ## Operational hygiene
 
 ### Database retention
 
-The DB grows by one row per (keyword × geo × device) per run. After a year of daily runs on 50 keywords that's ~18k rows, well within SQLite's practical limits. Prune periodically anyway:
+The DB grows by one row per (keyword × geo × device) per run. After a year of daily runs on 50 keywords that's roughly 18k rows, which is well within SQLite's practical limits, but it's still worth pruning periodically:
 
 ```bash
 # Dry-run (prints what would be deleted, deletes nothing):
@@ -277,7 +277,7 @@ python main.py prune --older-than-days 365
 python main.py prune --older-than-days 365 --yes
 ```
 
-Pair with a monthly cron entry. The schema uses `ON DELETE CASCADE`, so dropping old `runs` removes their `rank_results` automatically.
+Pair this with a monthly cron entry. The schema uses `ON DELETE CASCADE`, so dropping old `runs` removes their `rank_results` automatically.
 
 ### Backups
 
