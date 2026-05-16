@@ -28,12 +28,12 @@ logger = logging.getLogger(__name__)
 
 DECODO_ENDPOINT = "https://scraper-api.decodo.com/v2/scrape"
 
-# Retry on these status codes — transient infra issues, not auth/payload problems.
+# Retry on these status codes – transient infra issues, not auth/payload problems.
 RETRYABLE_STATUSES = frozenset({429, 500, 502, 503, 504})
 
 
 class DecodoCredentialError(RuntimeError):
-    """Raised on 401/403 — auth token missing or invalid."""
+    """Raised on 401/403 – auth token missing or invalid."""
 
 
 class DecodoAPIError(RuntimeError):
@@ -94,7 +94,7 @@ class DecodoFetcher:
         data = self._post(payload)
         issues = validate_response(data)
         if issues:
-            # Soft warn — surface schema drift early without breaking the run.
+            # Soft warn – surface schema drift early without breaking the run.
             for issue in issues:
                 logger.warning("Canary: %s (keyword=%r)", issue, config.keyword)
         return self._parse(data, config)
@@ -138,7 +138,7 @@ class DecodoFetcher:
                 self._sleep_backoff(attempt)
                 continue
             if not resp.ok:
-                # Surface the response body if available — Decodo includes
+                # Surface the response body if available – Decodo includes
                 # diagnostic hints (e.g. unsupported geo strings).
                 body = resp.text[:500].replace("\n", " ")
                 raise DecodoAPIError(
@@ -156,7 +156,7 @@ class DecodoFetcher:
         )
 
     def _sleep_backoff(self, attempt: int) -> None:
-        # Exponential with a small jitter — keeps retries from synchronizing
+        # Exponential with a small jitter – keeps retries from synchronizing
         # across concurrent workers hitting the same upstream incident.
         delay = (self.backoff_base ** attempt) + (0.1 * attempt)
         time.sleep(delay)

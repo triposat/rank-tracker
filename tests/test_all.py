@@ -127,7 +127,7 @@ class TestCanary(unittest.TestCase):
         self.assertTrue(any("parse_status_code" in i for i in issues))
 
     def test_no_features_does_not_alarm(self):
-        # A query with only organic results — niche content — should pass.
+        # A query with only organic results – niche content – should pass.
         data = minimal_response()
         self.assertEqual(validate_response(data), [])
 
@@ -382,7 +382,7 @@ class TestFetcherFeaturedSnippet(unittest.TestCase):
         self.assertTrue(result.featured_snippet_owned)
 
     def test_singular_legacy_shape(self):
-        # featured_snippet: [{url, ...}] — legacy/documented form
+        # featured_snippet: [{url, ...}] – legacy/documented form
         data = minimal_response(featured_snippet=[
             {"url": "https://example.com/y", "title": "T"},
         ])
@@ -999,11 +999,11 @@ class TestFrequencyFilter(unittest.TestCase):
 
     def test_weekly_window(self):
         cfg = self._cfg(frequency="weekly")
-        # 3 days ago — still within the weekly window, should skip
+        # 3 days ago – still within the weekly window, should skip
         self._save_check(cfg, hours_ago=72)
         due, _ = filter_due_configs([cfg], self.storage)
         self.assertEqual(due, [])
-        # 7 days ago — past window, should be due
+        # 7 days ago – past window, should be due
         run_id = self.storage.start_run()
         ts = datetime.now(timezone.utc) - timedelta(days=7)
         self.storage.save_result(run_id, RankResult(

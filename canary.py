@@ -1,6 +1,6 @@
 """Schema-drift canary for Decodo SERP responses.
 
-Decodo's parsed schema can shift without warning — a renamed field can silently
+Decodo's parsed schema can shift without warning – a renamed field can silently
 become `None` everywhere. `validate_response` asserts the fields we depend on
 are present and returns a list of issues. The fetcher logs these but does not
 raise on a single drift event; the runner can escalate after consecutive failures.
@@ -33,7 +33,7 @@ def validate_response(data: Dict[str, Any]) -> List[str]:
         return issues
 
     if parse_status is not None and parse_status != 12000:
-        # Decodo returns 12000 on a clean parse — anything else is parser error.
+        # Decodo returns 12000 on a clean parse – anything else is parser error.
         issues.append(f"parse_status_code={parse_status} (expected 12000)")
 
     for key in EXPECTED_INNER_KEYS:

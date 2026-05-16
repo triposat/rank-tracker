@@ -163,7 +163,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
                 locale="en-us",
             ))
             print(
-                f"[OK]     Decodo API reachable — got {result.raw_organic_count} "
+                f"[OK]     Decodo API reachable – got {result.raw_organic_count} "
                 f"organic results for 'decodo' (decodo.com pos={result.organic_position})"
             )
         except DecodoCredentialError as exc:
@@ -176,12 +176,12 @@ def cmd_doctor(args: argparse.Namespace) -> int:
             print(f"[FAIL]   Unexpected error talking to Decodo: {exc!r}")
             ok = False
 
-    # Staleness / heartbeat — flag if no successful run in a while.
+    # Staleness / heartbeat – flag if no successful run in a while.
     try:
         storage = Storage(args.db)
         latest = storage.latest_finished_run()
         if latest is None:
-            print("[INFO]   No completed runs yet — schedule a check.")
+            print("[INFO]   No completed runs yet – schedule a check.")
         else:
             finished = latest.get("finished_at")
             try:
@@ -227,7 +227,7 @@ def cmd_export(args: argparse.Namespace) -> int:
         n = storage.export_json(args.output, run_id=args.run_id)
     if n == 0:
         log.warning(
-            "Wrote 0 row(s) to %s — %s",
+            "Wrote 0 row(s) to %s – %s",
             args.output,
             f"no rows for run-id {args.run_id}" if args.run_id else "database is empty",
         )

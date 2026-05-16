@@ -1,10 +1,10 @@
 """Terminal + HTML reports across stored rank_results.
 
-`render_summary` — latest snapshot per (keyword, location, device, locale),
+`render_summary` – latest snapshot per (keyword, location, device, locale),
 including visibility score and delta vs. previous run.
-`render_trend` — multi-run history for a single keyword.
-`render_competitors` — top-N organic SERP for a keyword + diff vs. previous run.
-`render_html` — single self-contained HTML report (summary + trends + competitors).
+`render_trend` – multi-run history for a single keyword.
+`render_competitors` – top-N organic SERP for a keyword + diff vs. previous run.
+`render_html` – single self-contained HTML report (summary + trends + competitors).
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ from storage import Storage
 
 
 def _fmt_pos(p) -> str:
-    return "—" if p is None else str(p)
+    return "–" if p is None else str(p)
 
 
 def _fmt_delta(curr, prev) -> str:
@@ -38,7 +38,7 @@ def _fmt_delta(curr, prev) -> str:
 
 
 def render_summary(storage: Storage, location: Optional[str] = None) -> str:
-    """One row per tracked (keyword, location, device, locale) — the most recent
+    """One row per tracked (keyword, location, device, locale) – the most recent
     observation, score, and movement vs. the previous run."""
     with storage.connect() as conn:
         rows = conn.execute(
@@ -243,7 +243,7 @@ _HTML_TEMPLATE = """<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Rank Tracker Report — {generated}</title>
+<title>Rank Tracker Report – {generated}</title>
 <style>
   :root {{ color-scheme: light dark; }}
   body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
@@ -312,7 +312,7 @@ def _html_summary_row(row: dict, prev_pos) -> str:
         pos_cls = "pos-2"
     delta_html = ""
     if pos is None and prev_pos is None:
-        delta_html = "—"
+        delta_html = "–"
     elif prev_pos is None:
         delta_html = "<em>NEW</em>"
     elif pos is None:
@@ -331,13 +331,13 @@ def _html_summary_row(row: dict, prev_pos) -> str:
         badges.append('<span class="badge badge-ai">AI</span>')
     if row["featured_snippet_owned"]:
         badges.append('<span class="badge badge-fs">FS</span>')
-    badge_html = " ".join(badges) or "—"
+    badge_html = " ".join(badges) or "–"
 
     return (
         f'<tr class="{pos_cls}">'
         f'<td>{html.escape(row["keyword"])}</td>'
         f'<td>{html.escape(row["location"])} / {html.escape(row["device"])}</td>'
-        f'<td class="num">{pos if pos is not None else "—"}</td>'
+        f'<td class="num">{pos if pos is not None else "–"}</td>'
         f'<td class="num">{delta_html}</td>'
         f'<td class="num">{visibility_score_from_row(row):.1f}</td>'
         f'<td>{badge_html}</td>'

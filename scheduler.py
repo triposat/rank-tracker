@@ -72,7 +72,7 @@ def load_keywords_csv(path: str) -> List[RankCheckConfig]:
                 try:
                     kwargs["pages"] = int(str(cleaned["pages"]))
                 except ValueError:
-                    logger.warning("Bad pages value %r for keyword %r — using default",
+                    logger.warning("Bad pages value %r for keyword %r – using default",
                                    cleaned.get("pages"), cleaned["keyword"])
             if cleaned.get("active") is not None and cleaned.get("active") != "":
                 kwargs["active"] = _parse_bool(cleaned["active"])
@@ -80,7 +80,7 @@ def load_keywords_csv(path: str) -> List[RankCheckConfig]:
                 freq = cleaned["frequency"].lower()
                 if freq not in VALID_FREQUENCIES:
                     logger.warning(
-                        "Unknown frequency %r for keyword %r — using 'daily'. "
+                        "Unknown frequency %r for keyword %r – using 'daily'. "
                         "Valid: %s", freq, cleaned["keyword"],
                         ", ".join(sorted(VALID_FREQUENCIES)),
                     )
@@ -173,7 +173,7 @@ def filter_due_configs(
 class Alerter:
     """Compare current vs. previous rank, send notifications when needed.
 
-    Threshold is treated as a config knob, not a hardcoded constant — a 3-position
+    Threshold is treated as a config knob, not a hardcoded constant – a 3-position
     drop matters for a head term but is noise for a long-tail keyword.
     """
 
@@ -232,7 +232,7 @@ class Alerter:
         """Deliver `message` to every configured channel.
 
         Returns a list of delivery statuses ("webhook: ok", "smtp: ok",
-        "webhook: HTTP 404", etc) — useful for `test-alert` and for
+        "webhook: HTTP 404", etc) – useful for `test-alert` and for
         operators tailing logs. An empty list means no channels are
         configured at all; the caller logs the message in that case.
         """
@@ -257,12 +257,12 @@ class Alerter:
             return status
 
         # Discord returns 204 on success, Slack returns 200, Teams returns 200.
-        # Anything non-2xx is a delivery failure — surface it loudly.
+        # Anything non-2xx is a delivery failure – surface it loudly.
         if 200 <= resp.status_code < 300:
             return "webhook: ok"
         body_preview = resp.text[:200].replace("\n", " ")
         logger.warning(
-            "Webhook returned HTTP %d — alert NOT delivered. Body: %s",
+            "Webhook returned HTTP %d – alert NOT delivered. Body: %s",
             resp.status_code, body_preview,
         )
         return f"webhook: HTTP {resp.status_code}"
@@ -336,7 +336,7 @@ class BatchRunner:
         due, skipped = filter_due_configs(configs, self.storage)
         if skipped:
             logger.info(
-                "Run %s — skipping %d of %d (active/frequency rules)",
+                "Run %s – skipping %d of %d (active/frequency rules)",
                 run_id, len(skipped), len(configs),
             )
             for cfg, reason in skipped:
@@ -344,7 +344,7 @@ class BatchRunner:
                              cfg.keyword, cfg.geo, cfg.device_type, reason)
 
         logger.info(
-            "Run %s started — %d check(s) due, concurrency=%d",
+            "Run %s started – %d check(s) due, concurrency=%d",
             run_id, len(due), self.concurrency,
         )
         if self.concurrency == 1:
@@ -356,7 +356,7 @@ class BatchRunner:
         self.storage.finish_run(run_id)
         lifetime = self.storage.lifetime_api_calls()
         logger.info(
-            "Run %s complete — %d API call(s) this run, %d lifetime "
+            "Run %s complete – %d API call(s) this run, %d lifetime "
             "(%d skipped by frequency rules)",
             run_id, api_calls, lifetime, len(skipped),
         )
@@ -462,7 +462,7 @@ def build_run_heartbeat(
     api_calls = run_d.get("api_calls", 0)
 
     lines = [
-        f"Rank tracker heartbeat — run #{run_id}",
+        f"Rank tracker heartbeat – run #{run_id}",
         f"• {len(rows_d)} check(s) saved; {api_calls} API call(s) this run "
         f"(lifetime {lifetime}).",
     ]

@@ -5,7 +5,7 @@ Two tables:
 - `rank_results` holds one row per (keyword, location, device, locale, run).
 
 `run_id` lets us compare the current position against any previous run for the
-same (keyword, location, device, locale) tuple — the basis for change alerts.
+same (keyword, location, device, locale) tuple – the basis for change alerts.
 """
 
 from __future__ import annotations
@@ -266,7 +266,7 @@ class Storage:
         from Y runs". Uses ON DELETE CASCADE on the foreign key so dropping
         runs takes the related rank_results with them.
 
-        Also runs VACUUM after the delete to reclaim file space — important
+        Also runs VACUUM after the delete to reclaim file space – important
         for SQLite, which otherwise leaves the file at its peak size.
         """
         if older_than_days <= 0:

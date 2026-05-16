@@ -4,7 +4,7 @@ A single keyword's score blends organic position with SERP feature ownership.
 Position decays sub-linearly (pos 1 = 100, pos 10 ~ 32) so first-page slots
 beyond #1 still carry weight. Featured-snippet ownership and AI Overview
 citation each add bonuses, because owning those surfaces drives clicks even
-without a top organic slot. The score is intentionally bounded — it's a
+without a top organic slot. The score is intentionally bounded – it's a
 relative health signal, not a unit of traffic.
 """
 
