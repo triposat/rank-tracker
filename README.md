@@ -37,7 +37,7 @@ python main.py check
 
 ## Sample outputs
 
-All four samples below are captured from one continuous run against `keywords.csv.example`: `doctor` first, then `check` (Run 1), then `report`, then the heartbeat for Run 1. Your positions and scores will differ (SERPs change run-to-run).
+All four samples below are captured from one continuous run against *keywords.csv.example*: `doctor` first, then `check` (Run 1), then `report`, then the heartbeat for Run 1. Your positions and scores will differ (SERPs change run-to-run).
 
 `python main.py doctor` should print:
 
@@ -90,8 +90,8 @@ Positions shown as `–` mean "not in the tracked top-N" (the keyword isn't rank
 |---|---|
 | `python main.py doctor` | Verifies `DECODO_AUTH`, DB writability, live Decodo API, **last-run freshness**, and lifetime API call count. `--skip-api` skips the network call. `--max-staleness-hours N` warns if no successful run in N hours (default 48). |
 | `python main.py test-alert` | Sends a sample alert through every configured channel and reports per-channel HTTP status. Use this to validate webhook setup before relying on alerts. |
-| `python main.py check` | Runs one batch over `keywords.csv`. Flags: `--keywords path/to.csv` (override default `keywords.csv`), `--concurrency N` (parallel fetches), `--alerts` (send threshold-triggered alerts), `--threshold N` (alert sensitivity in positions, default 3), `--delay 1.0` (seconds between sequential calls). Logs API-call count at end of run. |
-| `python main.py schedule --every 86400` | Runs `check` on a fixed interval. Foreground. Use cron / launchd / systemd (see `examples/`) for unattended scheduling. |
+| `python main.py check` | Runs one batch over *keywords.csv*. Flags: `--keywords path/to.csv` (override default *keywords.csv*), `--concurrency N` (parallel fetches), `--alerts` (send threshold-triggered alerts), `--threshold N` (alert sensitivity in positions, default 3), `--delay 1.0` (seconds between sequential calls). Logs API-call count at end of run. |
+| `python main.py schedule --every 86400` | Runs `check` on a fixed interval. Foreground. Use cron / launchd / systemd (see *examples/*) for unattended scheduling. |
 | `python main.py report` | Shows the latest snapshot per (keyword × geo × device × locale) with visibility score and Δ vs prior run. Add `--keyword "..."` for a chronological trend, `--location "..."` to filter, or **`--html report.html`** for a self-contained shareable HTML page. |
 | `python main.py competitors --keyword "..."` | **Shows top-N organic results for a keyword + diff vs prior run** (who entered, who left, who moved). Filter with `--location`, `--device`, `--locale`. |
 | `python main.py history` | Dumps raw history chronologically. Add `--keyword "..."` to filter. |
@@ -144,21 +144,21 @@ Position 1 sets the baseline at 100, and an AI citation at rank 1 adds 25, so a 
 
 | File | Role |
 |---|---|
-| `models.py` | Pydantic `RankCheckConfig`, `RankResult`, `AIOverviewCitation`, `CompetitorEntry`. |
-| `fetcher.py` | Decodo client with retries, distinct `DecodoCredentialError` / `DecodoAPIError`, and the response parser. |
-| `canary.py` | Schema-drift validator. Asserts structural shape (path, types, key presence) without raising a false alarm when content is legitimately absent (e.g. a query that has no PAA block). |
-| `storage.py` | SQLite layer with WAL mode + migrations. `runs` + `rank_results` tables. UTC timestamps. Per-call connections, thread-safe. |
-| `scheduler.py` | `BatchRunner` (sequential or `ThreadPoolExecutor`), keyword loader, frequency-tier filter, `Alerter` (Slack/Discord/SMTP), heartbeat. |
-| `scoring.py` | Composite visibility score. |
-| `report.py` | Terminal summary + trend + competitor diff + self-contained HTML report. |
-| `main.py` | CLI: `doctor`, `check`, `schedule`, `report`, `competitors`, `export`, `history`, `prune`, `test-alert`. |
-| `keywords.csv.example` | Sample input. Copy to `keywords.csv` and edit with your domains. |
-| `tests/test_all.py` | 109 unit + integration tests against a captured fixture (no network needed). |
-| `examples/` | cron / launchd / systemd templates for unattended runs. |
+| *models.py* | *Pydantic* `RankCheckConfig`, `RankResult`, `AIOverviewCitation`, `CompetitorEntry`. |
+| *fetcher.py* | Decodo client with retries, distinct `DecodoCredentialError` / `DecodoAPIError`, and the response parser. |
+| *canary.py* | Schema-drift validator. Asserts structural shape (path, types, key presence) without raising a false alarm when content is legitimately absent (e.g. a query that has no PAA block). |
+| *storage.py* | SQLite layer with WAL mode + migrations. `runs` + `rank_results` tables. UTC timestamps. Per-call connections, thread-safe. |
+| *scheduler.py* | `BatchRunner` (sequential or `ThreadPoolExecutor`), keyword loader, frequency-tier filter, `Alerter` (Slack/Discord/SMTP), heartbeat. |
+| *scoring.py* | Composite visibility score. |
+| *report.py* | Terminal summary + trend + competitor diff + self-contained HTML report. |
+| *main.py* | CLI: `doctor`, `check`, `schedule`, `report`, `competitors`, `export`, `history`, `prune`, `test-alert`. |
+| *keywords.csv.example* | Sample input. Copy to *keywords.csv* and edit with your domains. |
+| *tests/test_all.py* | 109 unit + integration tests against a captured fixture (no network needed). |
+| *examples/* | cron / launchd / systemd templates for unattended runs. |
 
 ## Alerting
 
-Set any combination of these in `.env` and add `--alerts` to `check` or `schedule`:
+Set any combination of these in *.env* and add `--alerts` to `check` or `schedule`:
 
 ```
 ALERT_WEBHOOK_URL=https://hooks.slack.com/services/...   # or Discord
@@ -218,7 +218,7 @@ source .venv/bin/activate
 python -m unittest tests.test_all -v
 ```
 
-The suite uses a captured real Decodo response (`tests/fixtures/`) plus *unittest.mock* for transport, so it runs fully offline. Coverage:
+The suite uses a captured real Decodo response (*tests/fixtures/*) plus *unittest.mock* for transport, so it runs fully offline. Coverage:
 
 - Credential errors and 401 short-circuit
 - Retry on 5xx with exponential backoff
@@ -281,7 +281,7 @@ Pair this with a monthly cron entry. The schema uses `ON DELETE CASCADE`, so dro
 
 ### Backups
 
-The whole database is one file (`rank_tracker.db`). Back it up with SQLite's online backup:
+The whole database is one file (*rank_tracker.db*). Back it up with SQLite's online backup:
 
 ```bash
 sqlite3 rank_tracker.db ".backup '/path/to/backups/rank_tracker-$(date +%F).db'"
