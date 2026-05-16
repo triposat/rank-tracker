@@ -101,7 +101,7 @@ All commands accept `--db path/to.db` and `--log-level DEBUG`.
 
 ## keywords.csv
 
-Required columns: `keyword`, `target_domain`. Optional: `geo`, `locale`, `device_type`, `google_results_language`, `pages`, `target_url`, **`active`**, **`frequency`**.
+Required columns: *keyword*, *target_domain*. Optional: *geo*, *locale*, *device_type*, *google_results_language*, *pages*, *target_url*, *active*, *frequency*.
 
 ```csv
 keyword,target_domain,geo,locale,device_type,google_results_language,pages,active,frequency
@@ -115,17 +115,17 @@ residential proxies,decodo.com,United States,en-us,desktop,en,1,yes,monthly
 old-campaign-keyword,decodo.com,United States,en-us,desktop,en,1,no,daily
 ```
 
-- `target_domain` matches subdomain-aware (e.g. `example.com` matches `https://blog.example.com/...` but not `https://example.com.evil.com/...`).
-- `target_url` (optional) matches the exact URL instead, which is useful for tracking one specific blog post.
-- `geo` accepts country names, "City,Region,Country", ISO codes, or coordinates. See Decodo's [geolocation docs](https://help.decodo.com/docs/web-scraping-api-google-geolocation).
+- *target_domain* matches subdomain-aware (e.g. `example.com` matches `https://blog.example.com/...` but not `https://example.com.evil.com/...`).
+- *target_url* (optional) matches the exact URL instead, which is useful for tracking one specific blog post.
+- *geo* accepts country names, "City,Region,Country", ISO codes, or coordinates. See Decodo's [geolocation docs](https://help.decodo.com/docs/web-scraping-api-google-geolocation).
 - **`active=no`** keeps the historical data but stops new checks, so you can pause a keyword without forgetting it.
-- **`frequency`** is one of `daily` (~22h window), `weekly` (~6.5d), `monthly` (~28d), or `paused`. Each row is skipped if the same (keyword × geo × device × locale) was checked within the window, so you can run the script as often as your cron fires without double-billing.
+- *frequency* is one of `daily` (~22h window), `weekly` (~6.5d), `monthly` (~28d), or `paused`. Each row is skipped if the same (keyword × geo × device × locale) was checked within the window, so you can run the script as often as your cron fires without double-billing.
 
 Each row is one check, so to track a keyword across 3 locations you write 3 rows. **Exact duplicates are auto-collapsed at load time** with a warning.
 
 ### Cost control
 
-The combination of `active` + `frequency` is your cost lever. On a 50-keyword list with a mix of daily/weekly/monthly tiers, you can expect 30–60% fewer Decodo calls than tracking every keyword daily.
+The combination of *active* + *frequency* is your cost lever. On a 50-keyword list with a mix of daily/weekly/monthly tiers, you can expect 30–60% fewer Decodo calls than tracking every keyword daily.
 
 ## Visibility score
 
@@ -147,7 +147,7 @@ Position 1 sets the baseline at 100, and an AI citation at rank 1 adds 25, so a 
 | *models.py* | *Pydantic* *RankCheckConfig*, *RankResult*, *AIOverviewCitation*, *CompetitorEntry*. |
 | *fetcher.py* | Decodo client with retries, distinct *DecodoCredentialError* / *DecodoAPIError*, and the response parser. |
 | *canary.py* | Schema-drift validator. Asserts structural shape (path, types, key presence) without raising a false alarm when content is legitimately absent (e.g. a query that has no PAA block). |
-| *storage.py* | SQLite layer with WAL mode + migrations. `runs` + `rank_results` tables. UTC timestamps. Per-call connections, thread-safe. |
+| *storage.py* | SQLite layer with WAL mode + migrations. *runs* + *rank_results* tables. UTC timestamps. Per-call connections, thread-safe. |
 | *scheduler.py* | *BatchRunner* (sequential or *ThreadPoolExecutor*), keyword loader, frequency-tier filter, *Alerter* (Slack/Discord/SMTP), heartbeat. |
 | *scoring.py* | Composite visibility score. |
 | *report.py* | Terminal summary + trend + competitor diff + self-contained HTML report. |
@@ -255,7 +255,7 @@ After installing, `python main.py doctor` will warn if no scheduled run has comp
 
 ## Cost visibility
 
-Each call to Decodo counts, so *BatchRunner* records `api_calls` per run (including retries) and `doctor` prints the lifetime total. After a run you'll see:
+Each call to Decodo counts, so *BatchRunner* records *api_calls* per run (including retries) and `doctor` prints the lifetime total. After a run you'll see:
 
 ```
 Run 1 complete – 7 API call(s) this run, 7 lifetime (1 skipped by frequency rules)
@@ -277,7 +277,7 @@ python main.py prune --older-than-days 365
 python main.py prune --older-than-days 365 --yes
 ```
 
-Pair this with a monthly cron entry. The schema uses `ON DELETE CASCADE`, so dropping old `runs` removes their `rank_results` automatically.
+Pair this with a monthly cron entry. The schema uses `ON DELETE CASCADE`, so dropping old *runs* removes their *rank_results* automatically.
 
 ### Backups
 
