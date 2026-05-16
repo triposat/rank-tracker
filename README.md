@@ -37,7 +37,7 @@ python main.py check
 
 ## Sample outputs
 
-All four samples below are captured from one continuous run against *keywords.csv.example*: *doctor* first, then *check* (Run 1), then *report*, then the heartbeat for Run 1. Your positions and scores will differ (SERPs change run-to-run).
+All 4 samples below are captured from 1 continuous run against *keywords.csv.example*: *doctor* first, then *check* (Run 1), then *report*, then the heartbeat for Run 1. Your positions and scores will differ (SERPs change run-to-run).
 
 *python main.py doctor* should print:
 
@@ -90,12 +90,12 @@ Positions shown as *–* mean "not in the tracked top-N" (the keyword isn't rank
 |---|---|
 | *python main.py doctor* | Verifies *DECODO_AUTH*, DB writability, live Decodo API, **last-run freshness**, and lifetime API call count. *--skip-api* skips the network call. *--max-staleness-hours N* warns if no successful run in N hours (default 48). |
 | *python main.py test-alert* | Sends a sample alert through every configured channel and reports per-channel HTTP status. Use this to validate webhook setup before relying on alerts. |
-| *python main.py check* | Runs one batch over *keywords.csv*. Flags: *--keywords path/to.csv* (override default *keywords.csv*), *--concurrency N* (parallel fetches), *--alerts* (send threshold-triggered alerts), *--threshold N* (alert sensitivity in positions, default 3), *--delay 1.0* (seconds between sequential calls). Logs API-call count at end of run. |
+| *python main.py check* | Runs 1 batch over *keywords.csv*. Flags: *--keywords path/to.csv* (override default *keywords.csv*), *--concurrency N* (parallel fetches), *--alerts* (send threshold-triggered alerts), *--threshold N* (alert sensitivity in positions, default 3), *--delay 1.0* (seconds between sequential calls). Logs API-call count at end of run. |
 | *python main.py schedule --every 86400* | Runs *check* on a fixed interval. Foreground. Use cron / launchd / systemd (see *examples/*) for unattended scheduling. |
 | *python main.py report* | Shows the latest snapshot per (keyword × geo × device × locale) with visibility score and Δ vs prior run. Add *--keyword "..."* for a chronological trend, *--location "..."* to filter, or ***--html report.html*** for a self-contained shareable HTML page. |
 | *python main.py competitors --keyword "..."* | **Shows top-N organic results for a keyword + diff vs prior run** (who entered, who left, who moved). Filter with *--location*, *--device*, *--locale*. |
 | *python main.py history* | Dumps raw history chronologically. Add *--keyword "..."* to filter. |
-| *python main.py export --format csv --output results.csv* | Exports full DB or one run (*--run-id N*) to CSV or JSON. |
+| *python main.py export --format csv --output results.csv* | Exports full DB or 1 run (*--run-id N*) to CSV or JSON. |
 
 All commands accept *--db path/to.db* and *--log-level DEBUG*.
 
@@ -116,12 +116,12 @@ old-campaign-keyword,decodo.com,United States,en-us,desktop,en,1,no,daily
 ```
 
 - *target_domain* matches subdomain-aware (e.g. *example.com* matches *https://blog.example.com/...* but not *https://example.com.evil.com/...*).
-- *target_url* (optional) matches the exact URL instead, which is useful for tracking one specific blog post.
+- *target_url* (optional) matches the exact URL instead, which is useful for tracking 1 specific blog post.
 - *geo* accepts country names, "City,Region,Country", ISO codes, or coordinates. See Decodo's [geolocation docs](https://help.decodo.com/docs/web-scraping-api-google-geolocation).
 - ***active=no*** keeps the historical data but stops new checks, so you can pause a keyword without forgetting it.
 - *frequency* is one of *daily* (~22h window), *weekly* (~6.5d), *monthly* (~28d), or *paused*. Each row is skipped if the same (keyword × geo × device × locale) was checked within the window, so you can run the script as often as your cron fires without double-billing.
 
-Each row is one check, so to track a keyword across 3 locations you write 3 rows. **Exact duplicates are auto-collapsed at load time** with a warning.
+Each row is 1 check, so to track a keyword across 3 locations you write 3 rows. **Exact duplicates are auto-collapsed at load time** with a warning.
 
 ### Cost control
 
@@ -234,7 +234,7 @@ The suite uses a captured real Decodo response (*tests/fixtures/*) plus *unittes
 | Code | Meaning |
 |---|---|
 | 0 | Success |
-| 1 | *doctor* or *test-alert* reported at least one failure |
+| 1 | *doctor* or *test-alert* reported at least 1 failure |
 | 2 | Required precondition not met (no keyword configs, no alert channel for test-alert, or *prune* missing *--yes*) |
 | 3 | Export wrote 0 rows |
 | 4 | Decodo rejected credentials |
@@ -243,7 +243,7 @@ The suite uses a captured real Decodo response (*tests/fixtures/*) plus *unittes
 
 ## Unattended scheduling
 
-*schedule* runs in the foreground, so for real automated runs you'll want your OS scheduler. Templates for each platform are included below:
+The *schedule* command runs in the foreground, so for real automated runs you'll want your OS scheduler. Templates for each platform are included below:
 
 | Platform | Template | Install |
 |---|---|---|
@@ -267,7 +267,7 @@ For 50 keywords across 3 locations on a daily cadence, you can expect roughly 4,
 
 ### Database retention
 
-The DB grows by one row per (keyword × geo × device) per run. After a year of daily runs on 50 keywords that's roughly 18k rows, which is well within SQLite's practical limits, but it's still worth pruning periodically:
+The DB grows by 1 row per (keyword × geo × device) per run. After a year of daily runs on 50 keywords that's roughly 18k rows, which is well within SQLite's practical limits, but it's still worth pruning periodically:
 
 ```bash
 # Dry-run (prints what would be deleted, deletes nothing):
@@ -281,7 +281,7 @@ Pair this with a monthly cron entry. The schema uses *ON DELETE CASCADE*, so dro
 
 ### Backups
 
-The whole database is one file (*rank_tracker.db*). Back it up with SQLite's online backup:
+The whole database is 1 file (*rank_tracker.db*). Back it up with SQLite's online backup:
 
 ```bash
 sqlite3 rank_tracker.db ".backup '/path/to/backups/rank_tracker-$(date +%F).db'"
