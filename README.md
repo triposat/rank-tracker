@@ -92,7 +92,7 @@ Positions shown as *–* mean "not in the tracked top-N" (the keyword isn't rank
 | *python main.py test-alert* | Sends a sample alert through every configured channel and reports per-channel HTTP status. Use this to validate webhook setup before relying on alerts. |
 | *python main.py check* | Runs 1 batch over *keywords.csv*. Flags: *--keywords path/to.csv* (override default *keywords.csv*), *--concurrency N* (parallel fetches), *--alerts* (send threshold-triggered alerts), *--threshold N* (alert sensitivity in positions, default 3), *--delay 1.0* (seconds between sequential calls). Logs API-call count at end of run. |
 | *python main.py schedule --every 86400* | Runs *check* on a fixed interval. Foreground. Use cron / launchd / systemd (see *examples/*) for unattended scheduling. |
-| *python main.py report* | Shows the latest snapshot per (keyword × geo × device × locale) with visibility score and Δ vs prior run. Add *--keyword "..."* for a chronological trend, *--location "..."* to filter, or ***--html report.html*** for a self-contained shareable HTML page. |
+| *python main.py report* | Shows the latest snapshot per (keyword × geo × device × locale) with visibility score and Δ vs prior run. Add *--keyword "..."* for a chronological trend, *--location "..."* to filter, or *--html report.html* for a self-contained shareable HTML page. |
 | *python main.py competitors --keyword "..."* | **Shows top-N organic results for a keyword + diff vs prior run** (who entered, who left, who moved). Filter with *--location*, *--device*, *--locale*. |
 | *python main.py history* | Dumps raw history chronologically. Add *--keyword "..."* to filter. |
 | *python main.py export --format csv --output results.csv* | Exports full DB or 1 run (*--run-id N*) to CSV or JSON. |
@@ -118,7 +118,7 @@ old-campaign-keyword,decodo.com,United States,en-us,desktop,en,1,no,daily
 - *target_domain* matches subdomain-aware (e.g. *example.com* matches *https://blog.example.com/...* but not *https://example.com.evil.com/...*).
 - *target_url* (optional) matches the exact URL instead, which is useful for tracking 1 specific blog post.
 - *geo* accepts country names, "City,Region,Country", ISO codes, or coordinates. See Decodo's [geolocation docs](https://help.decodo.com/docs/web-scraping-api-google-geolocation).
-- ***active=no*** keeps the historical data but stops new checks, so you can pause a keyword without forgetting it.
+- *active=no* keeps the historical data but stops new checks, so you can pause a keyword without forgetting it.
 - *frequency* is one of *daily* (~22h window), *weekly* (~6.5d), *monthly* (~28d), or *paused*. Each row is skipped if the same (keyword × geo × device × locale) was checked within the window, so you can run the script as often as your cron fires without double-billing.
 
 Each row is 1 check, so to track a keyword across 3 locations you write 3 rows. **Exact duplicates are auto-collapsed at load time** with a warning.
