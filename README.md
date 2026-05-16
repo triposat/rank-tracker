@@ -8,7 +8,7 @@ A self-hosted SEO rank tracker built on the [Decodo SERP Scraping API](https://d
 
 ## Quick start
 
-> Examples below use a Linux / macOS shell. On Windows, replace `source .venv/bin/activate` with `.venv\Scripts\activate` and `cp` with `copy`.
+> Examples below use a Linux / macOS shell. On Windows, replace *source .venv/bin/activate* with *.venv\Scripts\activate* and *cp* with *copy*.
 
 ```bash
 # 1. Clone and enter the repo
@@ -37,9 +37,9 @@ python main.py check
 
 ## Sample outputs
 
-All four samples below are captured from one continuous run against *keywords.csv.example*: `doctor` first, then `check` (Run 1), then `report`, then the heartbeat for Run 1. Your positions and scores will differ (SERPs change run-to-run).
+All four samples below are captured from one continuous run against *keywords.csv.example*: *doctor* first, then *check* (Run 1), then *report*, then the heartbeat for Run 1. Your positions and scores will differ (SERPs change run-to-run).
 
-`python main.py doctor` should print:
+*python main.py doctor* should print:
 
 ```
 [OK]     DECODO_AUTH is set
@@ -51,9 +51,9 @@ All four samples below are captured from one continuous run against *keywords.cs
 All checks passed. You're ready to run `python main.py check`.
 ```
 
-If `doctor` reports `[FAIL]   Credentials rejected`, the token paste is the most common culprit, so check it for trailing whitespace and confirm you copied the pre-encoded `Basic authentication token` field rather than the raw username/password (the dashboard exposes both).
+If *doctor* reports *[FAIL]   Credentials rejected*, the token paste is the most common culprit, so check it for trailing whitespace and confirm you copied the pre-encoded *Basic authentication token* field rather than the raw username/password (the dashboard exposes both).
 
-`python main.py check` (Run 1, fresh DB) prints:
+*python main.py check* (Run 1, fresh DB) prints:
 
 ```
 Run 1 – skipping 1 of 8 (active/frequency rules)
@@ -68,7 +68,7 @@ Run 1 started – 7 check(s) due, concurrency=4
 Run 1 complete – 7 API call(s) this run, 7 lifetime (1 skipped by frequency rules)
 ```
 
-`python main.py report` (after Run 1) prints:
+*python main.py report* (after Run 1) prints:
 
 ```
 Keyword                          Geo/Device                    Pos      Δ vs prev   Score   AI   FS   PAA
@@ -82,22 +82,22 @@ serp scraping api                Germany/desktop                 –            
 serp scraping api                United States/desktop           –                    3.0    ·    ·     ✓
 ```
 
-Positions shown as `–` mean "not in the tracked top-N" (the keyword isn't ranking, or your domain isn't in the captured results).
+Positions shown as *–* mean "not in the tracked top-N" (the keyword isn't ranking, or your domain isn't in the captured results).
 
 ## Commands
 
 | Command | What it does |
 |---|---|
-| `python main.py doctor` | Verifies `DECODO_AUTH`, DB writability, live Decodo API, **last-run freshness**, and lifetime API call count. `--skip-api` skips the network call. `--max-staleness-hours N` warns if no successful run in N hours (default 48). |
-| `python main.py test-alert` | Sends a sample alert through every configured channel and reports per-channel HTTP status. Use this to validate webhook setup before relying on alerts. |
-| `python main.py check` | Runs one batch over *keywords.csv*. Flags: `--keywords path/to.csv` (override default *keywords.csv*), `--concurrency N` (parallel fetches), `--alerts` (send threshold-triggered alerts), `--threshold N` (alert sensitivity in positions, default 3), `--delay 1.0` (seconds between sequential calls). Logs API-call count at end of run. |
-| `python main.py schedule --every 86400` | Runs `check` on a fixed interval. Foreground. Use cron / launchd / systemd (see *examples/*) for unattended scheduling. |
-| `python main.py report` | Shows the latest snapshot per (keyword × geo × device × locale) with visibility score and Δ vs prior run. Add `--keyword "..."` for a chronological trend, `--location "..."` to filter, or **`--html report.html`** for a self-contained shareable HTML page. |
-| `python main.py competitors --keyword "..."` | **Shows top-N organic results for a keyword + diff vs prior run** (who entered, who left, who moved). Filter with `--location`, `--device`, `--locale`. |
-| `python main.py history` | Dumps raw history chronologically. Add `--keyword "..."` to filter. |
-| `python main.py export --format csv --output results.csv` | Exports full DB or one run (`--run-id N`) to CSV or JSON. |
+| *python main.py doctor* | Verifies *DECODO_AUTH*, DB writability, live Decodo API, **last-run freshness**, and lifetime API call count. *--skip-api* skips the network call. *--max-staleness-hours N* warns if no successful run in N hours (default 48). |
+| *python main.py test-alert* | Sends a sample alert through every configured channel and reports per-channel HTTP status. Use this to validate webhook setup before relying on alerts. |
+| *python main.py check* | Runs one batch over *keywords.csv*. Flags: *--keywords path/to.csv* (override default *keywords.csv*), *--concurrency N* (parallel fetches), *--alerts* (send threshold-triggered alerts), *--threshold N* (alert sensitivity in positions, default 3), *--delay 1.0* (seconds between sequential calls). Logs API-call count at end of run. |
+| *python main.py schedule --every 86400* | Runs *check* on a fixed interval. Foreground. Use cron / launchd / systemd (see *examples/*) for unattended scheduling. |
+| *python main.py report* | Shows the latest snapshot per (keyword × geo × device × locale) with visibility score and Δ vs prior run. Add *--keyword "..."* for a chronological trend, *--location "..."* to filter, or ***--html report.html*** for a self-contained shareable HTML page. |
+| *python main.py competitors --keyword "..."* | **Shows top-N organic results for a keyword + diff vs prior run** (who entered, who left, who moved). Filter with *--location*, *--device*, *--locale*. |
+| *python main.py history* | Dumps raw history chronologically. Add *--keyword "..."* to filter. |
+| *python main.py export --format csv --output results.csv* | Exports full DB or one run (*--run-id N*) to CSV or JSON. |
 
-All commands accept `--db path/to.db` and `--log-level DEBUG`.
+All commands accept *--db path/to.db* and *--log-level DEBUG*.
 
 ## keywords.csv
 
@@ -115,11 +115,11 @@ residential proxies,decodo.com,United States,en-us,desktop,en,1,yes,monthly
 old-campaign-keyword,decodo.com,United States,en-us,desktop,en,1,no,daily
 ```
 
-- *target_domain* matches subdomain-aware (e.g. `example.com` matches `https://blog.example.com/...` but not `https://example.com.evil.com/...`).
+- *target_domain* matches subdomain-aware (e.g. *example.com* matches *https://blog.example.com/...* but not *https://example.com.evil.com/...*).
 - *target_url* (optional) matches the exact URL instead, which is useful for tracking one specific blog post.
 - *geo* accepts country names, "City,Region,Country", ISO codes, or coordinates. See Decodo's [geolocation docs](https://help.decodo.com/docs/web-scraping-api-google-geolocation).
-- **`active=no`** keeps the historical data but stops new checks, so you can pause a keyword without forgetting it.
-- *frequency* is one of `daily` (~22h window), `weekly` (~6.5d), `monthly` (~28d), or `paused`. Each row is skipped if the same (keyword × geo × device × locale) was checked within the window, so you can run the script as often as your cron fires without double-billing.
+- ***active=no*** keeps the historical data but stops new checks, so you can pause a keyword without forgetting it.
+- *frequency* is one of *daily* (~22h window), *weekly* (~6.5d), *monthly* (~28d), or *paused*. Each row is skipped if the same (keyword × geo × device × locale) was checked within the window, so you can run the script as often as your cron fires without double-billing.
 
 Each row is one check, so to track a keyword across 3 locations you write 3 rows. **Exact duplicates are auto-collapsed at load time** with a warning.
 
@@ -129,7 +129,7 @@ The combination of *active* + *frequency* is your cost lever. On a 50-keyword li
 
 ## Visibility score
 
-The visibility score is a single number per result that combines position with SERP-feature ownership, and it appears in the `report` summary. Import `scoring.visibility_score()` to alert on it instead of raw position (run `pip install -e .` from the repo root if importing from outside this directory).
+The visibility score is a single number per result that combines position with SERP-feature ownership, and it appears in the *report* summary. Import *scoring.visibility_score()* to alert on it instead of raw position (run *pip install -e .* from the repo root if importing from outside this directory).
 
 ```
 score = 100 / √position
@@ -138,7 +138,7 @@ score = 100 / √position
       + 3 if paa_present
 ```
 
-Position 1 sets the baseline at 100, and an AI citation at rank 1 adds 25, so a score of `pos 2 + AI-cited #1 + PAA` works out to roughly 98.7.
+Position 1 sets the baseline at 100, and an AI citation at rank 1 adds 25, so a score of *pos 2 + AI-cited #1 + PAA* works out to roughly 98.7.
 
 ## Architecture
 
@@ -151,14 +151,14 @@ Position 1 sets the baseline at 100, and an AI citation at rank 1 adds 25, so a 
 | *scheduler.py* | *BatchRunner* (sequential or *ThreadPoolExecutor*), keyword loader, frequency-tier filter, *Alerter* (Slack/Discord/SMTP), heartbeat. |
 | *scoring.py* | Composite visibility score. |
 | *report.py* | Terminal summary + trend + competitor diff + self-contained HTML report. |
-| *main.py* | CLI: `doctor`, `check`, `schedule`, `report`, `competitors`, `export`, `history`, `prune`, `test-alert`. |
+| *main.py* | CLI: *doctor*, *check*, *schedule*, *report*, *competitors*, *export*, *history*, *prune*, *test-alert*. |
 | *keywords.csv.example* | Sample input. Copy to *keywords.csv* and edit with your domains. |
 | *tests/test_all.py* | 109 unit + integration tests against a captured fixture (no network needed). |
 | *examples/* | cron / launchd / systemd templates for unattended runs. |
 
 ## Alerting
 
-Set any combination of these in *.env* and add `--alerts` to `check` or `schedule`:
+Set any combination of these in *.env* and add *--alerts* to *check* or *schedule*:
 
 ```
 ALERT_WEBHOOK_URL=https://hooks.slack.com/services/...   # or Discord
@@ -171,14 +171,14 @@ ALERT_EMAIL_TO=team@example.com
 ```
 
 Webhook payload is selected automatically by URL hostname:
-- `discord.com/api/webhooks/...` or `discordapp.com/...` → `{"content": "..."}` (Discord)
-- Anything else (Slack, generic) → `{"text": "..."}`
+- *discord.com/api/webhooks/...* or *discordapp.com/...* → *{"content": "..."}* (Discord)
+- Anything else (Slack, generic) → *{"text": "..."}*
 
-Microsoft Teams uses a different webhook protocol and won't accept the simple `{"text": ...}` payload. Since the 2024 deprecation of the legacy O365 Connector, Teams alerts go through Power Automate with Adaptive Card payloads, so treat Teams as a separate integration.
+Microsoft Teams uses a different webhook protocol and won't accept the simple *{"text": ...}* payload. Since the 2024 deprecation of the legacy O365 Connector, Teams alerts go through Power Automate with Adaptive Card payloads, so treat Teams as a separate integration.
 
 ### Heartbeat after every run
 
-When `--alerts` is enabled, a per-run summary is posted to the same channel after each `check` / `schedule` run, even if no thresholds were breached:
+When *--alerts* is enabled, a per-run summary is posted to the same channel after each *check* / *schedule* run, even if no thresholds were breached:
 
 ```
 Rank tracker heartbeat – run #1
@@ -188,7 +188,7 @@ Rank tracker heartbeat – run #1
    - 'best laptop 2026' (United States/mobile): NEW
 ```
 
-The `NEW` token marks keywords entering the SERP for the first time at that (location, device). Later runs replace it with `prev → current` arrows once there's prior data to compare.
+The *NEW* token marks keywords entering the SERP for the first time at that (location, device). Later runs replace it with *prev → current* arrows once there's prior data to compare.
 
 Silence in your Slack now means the tracker stopped, not "everything's fine."
 
@@ -205,9 +205,9 @@ python main.py test-alert --message "Hello from rank tracker"
 Exit codes: 0 = all channels delivered, 1 = one or more failed, 2 = nothing configured.
 
 Alert events:
-- `NEW` – keyword entered the SERP for the first time at this (location, device).
-- `IMPROVED` / `DROPPED` – position moved by ≥ `--threshold` slots.
-- `DROPPED OUT` – a keyword was previously ranked but isn't anymore.
+- *NEW* – keyword entered the SERP for the first time at this (location, device).
+- *IMPROVED* / *DROPPED* – position moved by ≥ *--threshold* slots.
+- *DROPPED OUT* – a keyword was previously ranked but isn't anymore.
 
 ## Running tests
 
@@ -223,7 +223,7 @@ The suite uses a captured real Decodo response (*tests/fixtures/*) plus *unittes
 - Credential errors and 401 short-circuit
 - Retry on 5xx with exponential backoff
 - Parser (organic position, AI Overview citation, PAA, exact-URL match, dimensions)
-- Domain matching edge cases (substring traps, `www` stripping, subdomains)
+- Domain matching edge cases (substring traps, *www* stripping, subdomains)
 - SQLite round-trip
 - Alerter branches (Slack / Discord / SMTP, status-code handling)
 - CSV loader edge cases
@@ -234,8 +234,8 @@ The suite uses a captured real Decodo response (*tests/fixtures/*) plus *unittes
 | Code | Meaning |
 |---|---|
 | 0 | Success |
-| 1 | `doctor` or `test-alert` reported at least one failure |
-| 2 | Required precondition not met (no keyword configs, no alert channel for test-alert, or `prune` missing `--yes`) |
+| 1 | *doctor* or *test-alert* reported at least one failure |
+| 2 | Required precondition not met (no keyword configs, no alert channel for test-alert, or *prune* missing *--yes*) |
 | 3 | Export wrote 0 rows |
 | 4 | Decodo rejected credentials |
 | 5 | Required file not found |
@@ -243,19 +243,19 @@ The suite uses a captured real Decodo response (*tests/fixtures/*) plus *unittes
 
 ## Unattended scheduling
 
-`schedule` runs in the foreground, so for real automated runs you'll want your OS scheduler. Templates for each platform are included below:
+*schedule* runs in the foreground, so for real automated runs you'll want your OS scheduler. Templates for each platform are included below:
 
 | Platform | Template | Install |
 |---|---|---|
-| Linux/macOS cron | [examples/crontab.example](examples/crontab.example) | `crontab -e`, paste the line, save |
-| macOS launchd | [examples/com.local.rank-tracker.plist](examples/com.local.rank-tracker.plist) | `cp ... ~/Library/LaunchAgents/ && launchctl load ...` |
-| Linux systemd (user) | [examples/rank-tracker.service](examples/rank-tracker.service) + [examples/rank-tracker.timer](examples/rank-tracker.timer) | `cp ... ~/.config/systemd/user/ && systemctl --user enable --now rank-tracker.timer` |
+| Linux/macOS cron | [examples/crontab.example](examples/crontab.example) | *crontab -e*, paste the line, save |
+| macOS launchd | [examples/com.local.rank-tracker.plist](examples/com.local.rank-tracker.plist) | *cp ... ~/Library/LaunchAgents/ && launchctl load ...* |
+| Linux systemd (user) | [examples/rank-tracker.service](examples/rank-tracker.service) + [examples/rank-tracker.timer](examples/rank-tracker.timer) | *cp ... ~/.config/systemd/user/ && systemctl --user enable --now rank-tracker.timer* |
 
-After installing, `python main.py doctor` will warn if no scheduled run has completed in 48h (configurable via `--max-staleness-hours`).
+After installing, *python main.py doctor* will warn if no scheduled run has completed in 48h (configurable via *--max-staleness-hours*).
 
 ## Cost visibility
 
-Each call to Decodo counts, so *BatchRunner* records *api_calls* per run (including retries) and `doctor` prints the lifetime total. After a run you'll see:
+Each call to Decodo counts, so *BatchRunner* records *api_calls* per run (including retries) and *doctor* prints the lifetime total. After a run you'll see:
 
 ```
 Run 1 complete – 7 API call(s) this run, 7 lifetime (1 skipped by frequency rules)
@@ -277,7 +277,7 @@ python main.py prune --older-than-days 365
 python main.py prune --older-than-days 365 --yes
 ```
 
-Pair this with a monthly cron entry. The schema uses `ON DELETE CASCADE`, so dropping old *runs* removes their *rank_results* automatically.
+Pair this with a monthly cron entry. The schema uses *ON DELETE CASCADE*, so dropping old *runs* removes their *rank_results* automatically.
 
 ### Backups
 
@@ -291,7 +291,7 @@ A weekly cron line is enough, and the file also compresses well.
 
 ### Log rotation
 
-If you redirect `python main.py check` output to a log file in cron (`>> rank-tracker.log 2>&1`), use `logrotate` so it doesn't grow unbounded:
+If you redirect *python main.py check* output to a log file in cron (*>> rank-tracker.log 2>&1*), use *logrotate* so it doesn't grow unbounded:
 
 ```
 /path/to/rank-tracker.log {
