@@ -218,7 +218,7 @@ source .venv/bin/activate
 python -m unittest tests.test_all -v
 ```
 
-The suite uses a captured real Decodo response (`tests/fixtures/`) plus `unittest.mock` for transport, so it runs fully offline. Coverage:
+The suite uses a captured real Decodo response (`tests/fixtures/`) plus *unittest.mock* for transport, so it runs fully offline. Coverage:
 
 - Credential errors and 401 short-circuit
 - Retry on 5xx with exponential backoff
